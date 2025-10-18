@@ -1,0 +1,70 @@
+package com.johnpickup.garmin.converter;
+
+import com.garmin.fit.Sport;
+import com.garmin.fit.SubSport;
+import com.johnpickup.parser.Step;
+import com.johnpickup.parser.Workout;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Convert an entire independent workout into a Garmin workout with matching steps
+ */
+public class WorkoutConverter {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WorkoutConverter.class);
+    private static final Map<com.johnpickup.parser.Sport, Sport> sportMap = new HashMap<>();
+    static {
+        log.debug("Setting up sport map");
+        sportMap.put(com.johnpickup.parser.Sport.RUNNING, Sport.RUNNING);
+        sportMap.put(com.johnpickup.parser.Sport.ROAD_RUNNING, Sport.RUNNING);
+        sportMap.put(com.johnpickup.parser.Sport.TRAIL_RUNNING, Sport.RUNNING);
+        sportMap.put(com.johnpickup.parser.Sport.CYCLING, Sport.CYCLING);
+        sportMap.put(com.johnpickup.parser.Sport.ROAD_CYCLING, Sport.CYCLING);
+        sportMap.put(com.johnpickup.parser.Sport.MTB, Sport.CYCLING);
+        sportMap.put(com.johnpickup.parser.Sport.SWIMMING, Sport.SWIMMING);
+        sportMap.put(com.johnpickup.parser.Sport.POOL_SWIMMING, Sport.SWIMMING);
+        sportMap.put(com.johnpickup.parser.Sport.OPEN_WATER_SWIMMING, Sport.SWIMMING);
+        sportMap.put(com.johnpickup.parser.Sport.CARDIO, Sport.TRAINING);
+        sportMap.put(com.johnpickup.parser.Sport.STRENGTH, Sport.TRAINING);
+        sportMap.put(com.johnpickup.parser.Sport.HIIT, Sport.HIIT);
+    }
+
+    private static final Map<com.johnpickup.parser.Sport, SubSport> subSportMap = new HashMap<>();
+    static {
+        log.debug("Setting up sub-sport map");
+        subSportMap.put(com.johnpickup.parser.Sport.ROAD_RUNNING, SubSport.ROAD);
+        subSportMap.put(com.johnpickup.parser.Sport.TRAIL_RUNNING, SubSport.TRAIL);
+        subSportMap.put(com.johnpickup.parser.Sport.ROAD_CYCLING, SubSport.ROAD);
+        subSportMap.put(com.johnpickup.parser.Sport.MTB, SubSport.TRAIL);
+        subSportMap.put(com.johnpickup.parser.Sport.SWIMMING, SubSport.LAP_SWIMMING);
+        subSportMap.put(com.johnpickup.parser.Sport.POOL_SWIMMING, SubSport.LAP_SWIMMING);
+        subSportMap.put(com.johnpickup.parser.Sport.OPEN_WATER_SWIMMING, SubSport.OPEN_WATER);
+        subSportMap.put(com.johnpickup.parser.Sport.CARDIO, SubSport.CARDIO_TRAINING);
+        subSportMap.put(com.johnpickup.parser.Sport.STRENGTH, SubSport.STRENGTH_TRAINING);
+        subSportMap.put(com.johnpickup.parser.Sport.HIIT, SubSport.HIIT);
+    }
+
+    public com.johnpickup.garmin.fit.workout.Workout  convert(Workout workout) {
+        log.info("Converting parsed workout '{}' to garmin format", workout);
+        List<com.johnpickup.garmin.fit.workout.WorkoutStep> garminWorkoutSteps = convertStepsToGarmin(workout.getSteps());
+        Sport sport = sportMap.getOrDefault(workout.getSport(), Sport.RUNNING);
+        SubSport subSport = subSportMap.getOrDefault(workout.getSport(), SubSport.ALL);
+        Integer poolLength = SubSport.LAP_SWIMMING.equals(subSport) ? workout.getPoolLength() : null;
+        return new com.johnpickup.garmin.fit.workout.Workout(sport, subSport, poolLength, garminWorkoutSteps);
+    }
+
+    private List<com.johnpickup.garmin.fit.workout.WorkoutStep> convertStepsToGarmin(List<? extends Step> steps) {
+        List<com.johnpickup.garmin.fit.workout.WorkoutStep> result = new ArrayList<>();
+        for (Step step : steps) {
+            result.add(convertStepToGarmin(step));
+        }
+        return result;
+    }
+
+    private com.johnpickup.garmin.fit.workout.WorkoutStep convertStepToGarmin(Step step) {
+        return StepConverterFactory.getInstance().createFor(step).convert(step);
+    }
+}

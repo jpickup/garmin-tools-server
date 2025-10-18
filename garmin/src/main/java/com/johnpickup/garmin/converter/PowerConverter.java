@@ -1,0 +1,13 @@
+package com.johnpickup.garmin.converter;
+
+import com.johnpickup.garmin.common.unit.PowerTarget;
+import com.johnpickup.parser.Power;
+
+/**
+ * Interface that pace converters must implement.
+ * One converter will be implemented for each sub-type of Pace and will emit a corresponding
+ * instance of a Garmin PaceTarget
+ */
+public interface PowerConverter {
+    PowerTarget convert(Power power);
+}

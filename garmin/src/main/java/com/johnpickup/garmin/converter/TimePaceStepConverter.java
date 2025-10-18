@@ -1,0 +1,23 @@
+package com.johnpickup.garmin.converter;
+
+import com.johnpickup.garmin.fit.workout.TimePaceWorkoutStep;
+import com.johnpickup.garmin.fit.workout.WorkoutStep;
+import com.johnpickup.garmin.common.unit.PaceTarget;
+import com.johnpickup.garmin.common.unit.Time;
+import com.johnpickup.parser.Step;
+import com.johnpickup.parser.TimePaceStep;
+
+/**
+ * Convert independent pace steps into the Garmin equivalent
+ */
+public class TimePaceStepConverter implements StepConverter {
+    @Override
+    public WorkoutStep convert(Step step) {
+        TimePaceStep timePaceStep = (TimePaceStep)step;
+
+        Time t = new Time(timePaceStep.getTime().asDouble() * 60);
+        PaceTarget p = PaceConverterFactory.getInstance().getPaceConverter(timePaceStep.getPace()).convert(timePaceStep.getPace());
+        TimePaceWorkoutStep timePaceWorkoutStep = new TimePaceWorkoutStep(StepIntensityConverter.convert(step.getStepIntensity()), t, p);
+        return timePaceWorkoutStep;
+    }
+}

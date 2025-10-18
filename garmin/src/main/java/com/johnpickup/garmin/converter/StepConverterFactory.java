@@ -1,0 +1,45 @@
+package com.johnpickup.garmin.converter;
+
+import com.johnpickup.parser.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Factory that given a type of workout step with return an instance of the appropriate converter class
+ */
+public class StepConverterFactory {
+    private static StepConverterFactory instance;
+    private final Map<Class, StepConverter> converters = new HashMap<>();
+
+    private StepConverterFactory() {
+        register(new DistanceStepConverter(), DistanceStep.class);
+        register(new DistancePaceStepConverter(), DistancePaceStep.class);
+        register(new DistanceHeartRateStepConverter(), DistanceHeartRateStep.class);
+        register(new DistancePowerStepConverter(), DistancePowerStep.class);
+        register(new TimeStepConverter(), TimeStep.class);
+        register(new TimePaceStepConverter(), TimePaceStep.class);
+        register(new TimeHeartRateStepConverter(), TimeHeartRateStep.class);
+        register(new TimePowerStepConverter(), TimePowerStep.class);
+        register(new OpenStepConverter(), OpenStep.class);
+        register(new OpenPaceStepConverter(), OpenPaceStep.class);
+        register(new OpenHeartRateStepConverter(), OpenHeartRateStep.class);
+        register(new OpenPowerStepConverter(), OpenPowerStep.class);
+        register(new RepeatingStepsConverter(), RepeatingSteps.class);
+    }
+
+    public static StepConverterFactory getInstance() {
+        if (instance == null) {
+            instance = new StepConverterFactory();
+        }
+        return instance;
+    }
+
+    private void register(StepConverter converter,Class stepClass) {
+        converters.put(stepClass, converter);
+    }
+
+    public StepConverter createFor(Step step) {
+        return converters.get(step.getClass());
+    }
+}
