@@ -5,9 +5,8 @@ public enum HeartRateUnit {
 
     @Override
     public String toString() {
-        switch (this) {
-            case BPM: return "bpm";
-            default: return super.toString();
-        }
+        return switch (this) {
+            case BPM -> "bpm";
+        };
     }
 }

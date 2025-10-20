@@ -5,9 +5,8 @@ public enum PowerUnit {
 
     @Override
     public String toString() {
-        switch (this) {
-            case WATTS: return "W";
-            default: return super.toString();
-        }
+        return switch (this) {
+            case WATTS -> "W";
+        };
     }
 }
