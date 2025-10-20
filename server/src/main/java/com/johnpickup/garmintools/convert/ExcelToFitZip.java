@@ -3,7 +3,7 @@ package com.johnpickup.garmintools.convert;
 import com.johnpickup.garmin.converter.WorkoutScheduleConverter;
 import com.johnpickup.garmin.fit.WorkoutSaver;
 import com.johnpickup.garmin.fit.workout.Workout;
-import com.johnpickup.parser.WorkoutSchedule;
+import com.johnpickup.garmin.parser.WorkoutSchedule;
 import com.johnpickup.workout.excel.ExcelWorkoutScheduleReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 @RequiredArgsConstructor

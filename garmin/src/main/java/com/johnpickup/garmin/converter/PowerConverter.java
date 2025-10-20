@@ -1,7 +1,7 @@
 package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.PowerTarget;
-import com.johnpickup.parser.Power;
+import com.johnpickup.garmin.parser.Power;
 
 /**
  * Interface that pace converters must implement.

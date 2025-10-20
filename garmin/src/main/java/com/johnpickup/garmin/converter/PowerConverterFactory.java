@@ -1,8 +1,8 @@
 package com.johnpickup.garmin.converter;
 
-import com.johnpickup.parser.Power;
-import com.johnpickup.parser.PowerRange;
-import com.johnpickup.parser.PowerZone;
+import com.johnpickup.garmin.parser.Power;
+import com.johnpickup.garmin.parser.PowerRange;
+import com.johnpickup.garmin.parser.PowerZone;
 
 import java.util.HashMap;
 import java.util.Map;

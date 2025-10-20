@@ -2,8 +2,8 @@ package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.PowerTarget;
 import com.johnpickup.garmin.common.unit.ZonePowerTarget;
-import com.johnpickup.parser.Power;
-import com.johnpickup.parser.PowerZone;
+import com.johnpickup.garmin.parser.Power;
+import com.johnpickup.garmin.parser.PowerZone;
 
 public class ZonePowerConverter implements PowerConverter {
     @Override

@@ -2,8 +2,8 @@ package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.HeartRateTarget;
 import com.johnpickup.garmin.common.unit.ZoneHeartRateTarget;
-import com.johnpickup.parser.HeartRate;
-import com.johnpickup.parser.HeartRateZone;
+import com.johnpickup.garmin.parser.HeartRate;
+import com.johnpickup.garmin.parser.HeartRateZone;
 
 public class ZoneHeartRateConverter implements HeartRateConverter {
     @Override

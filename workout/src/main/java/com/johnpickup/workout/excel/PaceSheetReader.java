@@ -1,7 +1,7 @@
 package com.johnpickup.workout.excel;
 
 import com.johnpickup.workout.parser.PaceRangeTextParser;
-import com.johnpickup.parser.Pace;
+import com.johnpickup.garmin.parser.Pace;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;

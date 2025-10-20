@@ -1,7 +1,7 @@
 package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.HeartRateTarget;
-import com.johnpickup.parser.HeartRate;
+import com.johnpickup.garmin.parser.HeartRate;
 
 /**
  * Interface that pace converters must implement.

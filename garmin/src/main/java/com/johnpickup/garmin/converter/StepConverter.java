@@ -1,7 +1,7 @@
 package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.fit.workout.WorkoutStep;
-import com.johnpickup.parser.Step;
+import com.johnpickup.garmin.parser.Step;
 
 /**
  * Created by john on 09/01/2017.

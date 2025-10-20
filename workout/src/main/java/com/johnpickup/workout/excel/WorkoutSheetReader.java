@@ -1,8 +1,8 @@
 package com.johnpickup.workout.excel;
 
 import com.johnpickup.workout.parser.WorkoutTextParser;
-import com.johnpickup.parser.Sport;
-import com.johnpickup.parser.Workout;
+import com.johnpickup.garmin.parser.Sport;
+import com.johnpickup.garmin.parser.Workout;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;

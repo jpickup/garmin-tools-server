@@ -2,8 +2,8 @@ package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.fit.workout.RepeatingStepsWorkoutStep;
 import com.johnpickup.garmin.fit.workout.WorkoutStep;
-import com.johnpickup.parser.RepeatingSteps;
-import com.johnpickup.parser.Step;
+import com.johnpickup.garmin.parser.RepeatingSteps;
+import com.johnpickup.garmin.parser.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,6 @@ public class RepeatingStepsConverter implements StepConverter {
         for (Step internalStep : repeatingSteps.getSteps()) {
             steps.add(StepConverterFactory.getInstance().createFor(internalStep).convert(internalStep));
         }
-        RepeatingStepsWorkoutStep result =
-                new RepeatingStepsWorkoutStep(StepIntensityConverter.convert(step.getStepIntensity()), repeatCount, steps);
-        return result;
+        return new RepeatingStepsWorkoutStep(StepIntensityConverter.convert(step.getStepIntensity()), repeatCount, steps);
     }
 }

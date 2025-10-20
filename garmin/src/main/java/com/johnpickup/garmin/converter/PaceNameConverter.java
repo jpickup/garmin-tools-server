@@ -1,8 +1,8 @@
 package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.PaceTarget;
-import com.johnpickup.parser.Pace;
-import com.johnpickup.parser.PaceName;
+import com.johnpickup.garmin.parser.Pace;
+import com.johnpickup.garmin.parser.PaceName;
 
 import java.util.Map;
 

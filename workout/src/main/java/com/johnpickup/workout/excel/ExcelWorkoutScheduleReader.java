@@ -1,7 +1,7 @@
 package com.johnpickup.workout.excel;
 
-import com.johnpickup.parser.ScheduledWorkout;
-import com.johnpickup.parser.WorkoutSchedule;
+import com.johnpickup.garmin.parser.ScheduledWorkout;
+import com.johnpickup.garmin.parser.WorkoutSchedule;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;

@@ -4,8 +4,8 @@ import com.johnpickup.garmin.fit.workout.DistancePowerWorkoutStep;
 import com.johnpickup.garmin.fit.workout.WorkoutStep;
 import com.johnpickup.garmin.common.unit.Distance;
 import com.johnpickup.garmin.common.unit.PowerTarget;
-import com.johnpickup.parser.DistancePowerStep;
-import com.johnpickup.parser.Step;
+import com.johnpickup.garmin.parser.DistancePowerStep;
+import com.johnpickup.garmin.parser.Step;
 
 /**
  * Convert independent pace steps into the Garmin equivalent

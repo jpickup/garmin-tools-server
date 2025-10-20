@@ -2,8 +2,8 @@ package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.PaceTarget;
 import com.johnpickup.garmin.common.unit.PaceUnit;
-import com.johnpickup.parser.Pace;
-import com.johnpickup.parser.PaceRange;
+import com.johnpickup.garmin.parser.Pace;
+import com.johnpickup.garmin.parser.PaceRange;
 
 /**
  * Convert an independent pace range into a Garmin pace target

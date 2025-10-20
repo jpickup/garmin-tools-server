@@ -1,8 +1,8 @@
 package com.johnpickup.garmin.converter;
 
-import com.johnpickup.parser.HeartRate;
-import com.johnpickup.parser.HeartRateRange;
-import com.johnpickup.parser.HeartRateZone;
+import com.johnpickup.garmin.parser.HeartRate;
+import com.johnpickup.garmin.parser.HeartRateRange;
+import com.johnpickup.garmin.parser.HeartRateZone;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class HeartRateConverterFactory {
     private static HeartRateConverterFactory instance;
-    private Map<Class, HeartRateConverter> converters = new HashMap<>();
+    private final Map<Class, HeartRateConverter> converters = new HashMap<>();
 
     private HeartRateConverterFactory() {
         register(new ZoneHeartRateConverter(), HeartRateZone.class);

@@ -2,8 +2,8 @@ package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.common.unit.PaceTarget;
 import com.johnpickup.garmin.common.unit.PaceUnit;
-import com.johnpickup.parser.MaximumPace;
-import com.johnpickup.parser.Pace;
+import com.johnpickup.garmin.parser.MaximumPace;
+import com.johnpickup.garmin.parser.Pace;
 
 /**
  * Created by john on 09/01/2017.

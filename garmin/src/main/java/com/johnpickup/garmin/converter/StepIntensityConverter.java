@@ -1,7 +1,7 @@
 package com.johnpickup.garmin.converter;
 
 import com.garmin.fit.Intensity;
-import com.johnpickup.parser.StepIntensity;
+import com.johnpickup.garmin.parser.StepIntensity;
 
 public class StepIntensityConverter {
     public static Intensity convert(StepIntensity stepIntensity) {
@@ -12,7 +12,6 @@ public class StepIntensityConverter {
             case WARMUP -> Intensity.WARMUP;
             case COOLDOWN -> Intensity.COOLDOWN;
             case RECOVERY -> Intensity.RECOVERY;
-            default -> Intensity.INVALID;
         };
     }
 }

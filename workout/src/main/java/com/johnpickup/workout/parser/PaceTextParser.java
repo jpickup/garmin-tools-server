@@ -1,6 +1,6 @@
 package com.johnpickup.workout.parser;
 
-import com.johnpickup.parser.Pace;
+import com.johnpickup.garmin.parser.Pace;
 import com.johnpickup.garmin.parser.WorkoutLexer;
 import com.johnpickup.garmin.parser.WorkoutParser;
 import org.antlr.v4.runtime.CharStream;

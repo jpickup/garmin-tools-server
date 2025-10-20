@@ -2,8 +2,8 @@ package com.johnpickup.garmin.converter;
 
 import com.garmin.fit.Sport;
 import com.garmin.fit.SubSport;
-import com.johnpickup.parser.Step;
-import com.johnpickup.parser.Workout;
+import com.johnpickup.garmin.parser.Step;
+import com.johnpickup.garmin.parser.Workout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,36 +15,36 @@ import java.util.Map;
  */
 public class WorkoutConverter {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WorkoutConverter.class);
-    private static final Map<com.johnpickup.parser.Sport, Sport> sportMap = new HashMap<>();
+    private static final Map<com.johnpickup.garmin.parser.Sport, Sport> sportMap = new HashMap<>();
     static {
         log.debug("Setting up sport map");
-        sportMap.put(com.johnpickup.parser.Sport.RUNNING, Sport.RUNNING);
-        sportMap.put(com.johnpickup.parser.Sport.ROAD_RUNNING, Sport.RUNNING);
-        sportMap.put(com.johnpickup.parser.Sport.TRAIL_RUNNING, Sport.RUNNING);
-        sportMap.put(com.johnpickup.parser.Sport.CYCLING, Sport.CYCLING);
-        sportMap.put(com.johnpickup.parser.Sport.ROAD_CYCLING, Sport.CYCLING);
-        sportMap.put(com.johnpickup.parser.Sport.MTB, Sport.CYCLING);
-        sportMap.put(com.johnpickup.parser.Sport.SWIMMING, Sport.SWIMMING);
-        sportMap.put(com.johnpickup.parser.Sport.POOL_SWIMMING, Sport.SWIMMING);
-        sportMap.put(com.johnpickup.parser.Sport.OPEN_WATER_SWIMMING, Sport.SWIMMING);
-        sportMap.put(com.johnpickup.parser.Sport.CARDIO, Sport.TRAINING);
-        sportMap.put(com.johnpickup.parser.Sport.STRENGTH, Sport.TRAINING);
-        sportMap.put(com.johnpickup.parser.Sport.HIIT, Sport.HIIT);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.RUNNING, Sport.RUNNING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.ROAD_RUNNING, Sport.RUNNING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.TRAIL_RUNNING, Sport.RUNNING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.CYCLING, Sport.CYCLING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.ROAD_CYCLING, Sport.CYCLING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.MTB, Sport.CYCLING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.SWIMMING, Sport.SWIMMING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.POOL_SWIMMING, Sport.SWIMMING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.OPEN_WATER_SWIMMING, Sport.SWIMMING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.CARDIO, Sport.TRAINING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.STRENGTH, Sport.TRAINING);
+        sportMap.put(com.johnpickup.garmin.parser.Sport.HIIT, Sport.HIIT);
     }
 
-    private static final Map<com.johnpickup.parser.Sport, SubSport> subSportMap = new HashMap<>();
+    private static final Map<com.johnpickup.garmin.parser.Sport, SubSport> subSportMap = new HashMap<>();
     static {
         log.debug("Setting up sub-sport map");
-        subSportMap.put(com.johnpickup.parser.Sport.ROAD_RUNNING, SubSport.ROAD);
-        subSportMap.put(com.johnpickup.parser.Sport.TRAIL_RUNNING, SubSport.TRAIL);
-        subSportMap.put(com.johnpickup.parser.Sport.ROAD_CYCLING, SubSport.ROAD);
-        subSportMap.put(com.johnpickup.parser.Sport.MTB, SubSport.TRAIL);
-        subSportMap.put(com.johnpickup.parser.Sport.SWIMMING, SubSport.LAP_SWIMMING);
-        subSportMap.put(com.johnpickup.parser.Sport.POOL_SWIMMING, SubSport.LAP_SWIMMING);
-        subSportMap.put(com.johnpickup.parser.Sport.OPEN_WATER_SWIMMING, SubSport.OPEN_WATER);
-        subSportMap.put(com.johnpickup.parser.Sport.CARDIO, SubSport.CARDIO_TRAINING);
-        subSportMap.put(com.johnpickup.parser.Sport.STRENGTH, SubSport.STRENGTH_TRAINING);
-        subSportMap.put(com.johnpickup.parser.Sport.HIIT, SubSport.HIIT);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.ROAD_RUNNING, SubSport.ROAD);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.TRAIL_RUNNING, SubSport.TRAIL);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.ROAD_CYCLING, SubSport.ROAD);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.MTB, SubSport.TRAIL);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.SWIMMING, SubSport.LAP_SWIMMING);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.POOL_SWIMMING, SubSport.LAP_SWIMMING);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.OPEN_WATER_SWIMMING, SubSport.OPEN_WATER);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.CARDIO, SubSport.CARDIO_TRAINING);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.STRENGTH, SubSport.STRENGTH_TRAINING);
+        subSportMap.put(com.johnpickup.garmin.parser.Sport.HIIT, SubSport.HIIT);
     }
 
     public com.johnpickup.garmin.fit.workout.Workout  convert(Workout workout) {

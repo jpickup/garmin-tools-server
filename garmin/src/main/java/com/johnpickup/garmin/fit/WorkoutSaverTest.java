@@ -25,11 +25,11 @@ public class WorkoutSaverTest {
         WorkoutTextParser parser = new WorkoutTextParser();
         WorkoutConverter converter = new WorkoutConverter();
 
-        com.johnpickup.parser.Workout twoMile = parser.parse("2mi");
+        com.johnpickup.garmin.parser.Workout twoMile = parser.parse("2mi");
         Workout garminTwoMileWorkout = converter.convert(twoMile);
         saver.save(garminTwoMileWorkout, "parsed_2mi.fit");
 
-        com.johnpickup.parser.Workout interval = parser.parse("1mi + (1mi@06:00-07:00/mi + 400m) * 4 + 1mi");
+        com.johnpickup.garmin.parser.Workout interval = parser.parse("1mi + (1mi@06:00-07:00/mi + 400m) * 4 + 1mi");
         Workout garminInterval = converter.convert(interval);
         saver.save(garminInterval, "parsed_interval.fit");
 

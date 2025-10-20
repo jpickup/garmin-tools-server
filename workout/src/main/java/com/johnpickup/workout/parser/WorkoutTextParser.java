@@ -1,7 +1,7 @@
 package com.johnpickup.workout.parser;
 
-import com.johnpickup.parser.AntlrErrorHandler;
-import com.johnpickup.parser.Workout;
+import com.johnpickup.garmin.parser.AntlrErrorHandler;
+import com.johnpickup.garmin.parser.Workout;
 import com.johnpickup.garmin.parser.WorkoutLexer;
 import com.johnpickup.garmin.parser.WorkoutParser;
 import org.antlr.v4.runtime.CharStream;

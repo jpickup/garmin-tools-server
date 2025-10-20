@@ -1,6 +1,6 @@
 package com.johnpickup.garmin.converter;
 
-import com.johnpickup.parser.*;
+import com.johnpickup.garmin.parser.*;
 
 import java.util.HashMap;
 import java.util.Map;

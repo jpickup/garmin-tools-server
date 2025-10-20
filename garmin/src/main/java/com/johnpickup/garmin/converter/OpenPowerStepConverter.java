@@ -3,8 +3,8 @@ package com.johnpickup.garmin.converter;
 import com.johnpickup.garmin.fit.workout.OpenPowerWorkoutStep;
 import com.johnpickup.garmin.fit.workout.WorkoutStep;
 import com.johnpickup.garmin.common.unit.PowerTarget;
-import com.johnpickup.parser.OpenPowerStep;
-import com.johnpickup.parser.Step;
+import com.johnpickup.garmin.parser.OpenPowerStep;
+import com.johnpickup.garmin.parser.Step;
 
 /**
  * Convert independent pace steps into the Garmin equivalent

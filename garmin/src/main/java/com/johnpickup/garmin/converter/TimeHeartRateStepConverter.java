@@ -4,8 +4,8 @@ import com.johnpickup.garmin.fit.workout.TimeHeartRateWorkoutStep;
 import com.johnpickup.garmin.fit.workout.WorkoutStep;
 import com.johnpickup.garmin.common.unit.HeartRateTarget;
 import com.johnpickup.garmin.common.unit.Time;
-import com.johnpickup.parser.Step;
-import com.johnpickup.parser.TimeHeartRateStep;
+import com.johnpickup.garmin.parser.Step;
+import com.johnpickup.garmin.parser.TimeHeartRateStep;
 
 /**
  * Convert independent pace steps into the Garmin equivalent
@@ -21,8 +21,6 @@ public class TimeHeartRateStepConverter implements StepConverter {
                 .getHeartRateConverter(timeHeartRateStep.getHeartRate())
                 .convert(timeHeartRateStep.getHeartRate());
 
-        TimeHeartRateWorkoutStep timeHeartRateWorkoutStep =
-                new TimeHeartRateWorkoutStep(StepIntensityConverter.convert(step.getStepIntensity()), t, heartRateTarget);
-        return timeHeartRateWorkoutStep;
+        return new TimeHeartRateWorkoutStep(StepIntensityConverter.convert(step.getStepIntensity()), t, heartRateTarget);
     }
 }

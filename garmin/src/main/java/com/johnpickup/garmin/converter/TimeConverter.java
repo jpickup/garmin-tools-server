@@ -1,6 +1,6 @@
 package com.johnpickup.garmin.converter;
 
-import com.johnpickup.parser.Time;
+import com.johnpickup.garmin.parser.Time;
 
 /**
  * Convert independent times into Garmin units

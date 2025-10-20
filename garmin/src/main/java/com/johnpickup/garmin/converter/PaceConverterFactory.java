@@ -1,9 +1,9 @@
 package com.johnpickup.garmin.converter;
 
-import com.johnpickup.parser.MaximumPace;
-import com.johnpickup.parser.MinimumPace;
-import com.johnpickup.parser.Pace;
-import com.johnpickup.parser.PaceRange;
+import com.johnpickup.garmin.parser.MaximumPace;
+import com.johnpickup.garmin.parser.MinimumPace;
+import com.johnpickup.garmin.parser.Pace;
+import com.johnpickup.garmin.parser.PaceRange;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class PaceConverterFactory {
     private static PaceConverterFactory instance;
-    private Map<Class, PaceConverter> converters = new HashMap<>();
+    private final Map<Class, PaceConverter> converters = new HashMap<>();
 
     private PaceConverterFactory() {
         register(new PaceRangeConverter(), PaceRange.class);

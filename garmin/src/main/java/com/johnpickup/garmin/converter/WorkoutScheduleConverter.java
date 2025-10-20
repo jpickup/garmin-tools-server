@@ -2,11 +2,11 @@ package com.johnpickup.garmin.converter;
 
 import com.johnpickup.garmin.fit.schedule.TrainingSchedule;
 import com.johnpickup.garmin.common.unit.PaceTarget;
-import com.johnpickup.parser.Pace;
-import com.johnpickup.parser.PaceName;
-import com.johnpickup.parser.ScheduledWorkout;
-import com.johnpickup.parser.Workout;
-import com.johnpickup.parser.WorkoutSchedule;
+import com.johnpickup.garmin.parser.Pace;
+import com.johnpickup.garmin.parser.PaceName;
+import com.johnpickup.garmin.parser.ScheduledWorkout;
+import com.johnpickup.garmin.parser.Workout;
+import com.johnpickup.garmin.parser.WorkoutSchedule;
 import lombok.Getter;
 
 import java.util.ArrayList;
