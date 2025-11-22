@@ -18,7 +18,7 @@ import java.util.zip.ZipOutputStream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class ExcelToFitZip {
+public class ExcelToFitZip implements ExcelConverter {
     private final ExcelWorkoutScheduleReader excelWorkoutScheduleReader;
 
     public byte[] convertXls(InputStream excelInputStream) throws IOException {

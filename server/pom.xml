@@ -40,9 +40,13 @@
         </dependency>
         <dependency>
             <groupId>com.johnpickup</groupId>
+            <artifactId>ical</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.johnpickup</groupId>
             <artifactId>garmin</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,9 @@
 package com.johnpickup.garmintools.controller;
 
 
+import com.johnpickup.garmintools.convert.ExcelConverter;
 import com.johnpickup.garmintools.convert.ExcelToFitZip;
+import com.johnpickup.garmintools.convert.ExcelToIcal;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/api/schedule")
 @Slf4j
@@ -22,8 +22,20 @@ public class WorkoutScheduleController {
     @Autowired
     ExcelToFitZip excelToFitZip;
 
-    @PostMapping
+    @Autowired
+    ExcelToIcal excelToIcal;
+
+    @PostMapping("/fit")
     public ResponseEntity<byte[]> convertExcelToFitZip(@RequestPart MultipartFile file) {
+        return performConversion(file, excelToFitZip, "zip");
+    }
+
+    @PostMapping("/ics")
+    public ResponseEntity<byte[]> convertExcelToIcal(@RequestPart MultipartFile file) {
+        return performConversion(file, excelToIcal, "ics");
+    }
+
+    private ResponseEntity<byte[]> performConversion(@RequestPart MultipartFile file, ExcelConverter converter, String newExtension) {
         log.info("Convert Excel file: {} ({})", file.getOriginalFilename(), file.getSize());
 
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -33,10 +45,12 @@ public class WorkoutScheduleController {
 
         try {
             log.info("Reading {}", file.getOriginalFilename());
-            String outputFilename = file.getOriginalFilename().replace(".xlsx", ".zip").replace(".xls", ".zip");
+            String outputFilename = file.getOriginalFilename()
+                    .replace(".xlsx", "." + newExtension)
+                    .replace(".xls", "." + newExtension);
             byte[] bytes = switch (extension.toLowerCase()) {
-                case "xls" -> excelToFitZip.convertXls(file.getInputStream());
-                case "xlsx" -> excelToFitZip.convertXlsx(file.getInputStream());
+                case "xls" -> converter.convertXls(file.getInputStream());
+                case "xlsx" -> converter.convertXlsx(file.getInputStream());
                 default -> throw new RuntimeException("Unknown filetype " + extension);
             };
             log.info("Response file: {} ({} bytes)", outputFilename, bytes.length);
@@ -49,8 +63,7 @@ public class WorkoutScheduleController {
                     .contentLength(bytes.length)
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(bytes);
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Error processing Excel file upload of {}", file.getOriginalFilename(), e);
             throw new RuntimeException("File is not a valid training schedule");
         }
