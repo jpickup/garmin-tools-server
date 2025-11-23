@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: garmintools:vue
+    image: jwpickup/garmintools-vue
     container_name: garmintools-vue-frontend
     ports:
       - "8081:80"
@@ -8,7 +8,7 @@ services:
       - backend
 
   backend:
-    image: garmintools:server
+    image: jwpickup/garmintools-server
     container_name: garmintools-java-backend
     ports:
       - "8080:8080"
