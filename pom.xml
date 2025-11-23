@@ -21,7 +21,7 @@
         <module>gpx</module>
         <module>workout</module>
         <module>garmin</module>
-        <module>ical</module>
+        <module>calendar</module>
         <module>server</module>
     </modules>
 

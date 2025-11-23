@@ -1,0 +1,14 @@
+services:
+  frontend:
+    image: garmintools:vue
+    container_name: garmintools-vue-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+
+  backend:
+    image: garmintools:server
+    container_name: garmintools-java-backend
+    ports:
+      - "8080:8080"
