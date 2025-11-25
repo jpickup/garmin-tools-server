@@ -57,7 +57,7 @@ public class WorkoutScheduleController {
 
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=" + outputFilename)
-                    .header("Access-Control-Allow-Origin", "*")
+                    //.header("Access-Control-Allow-Origin", "*")       // already in WebConfig
                     .header("Access-Control-Expose-Headers", "*")
                     .header("Access-Control-Allow-Headers", "*")
                     .contentLength(bytes.length)
