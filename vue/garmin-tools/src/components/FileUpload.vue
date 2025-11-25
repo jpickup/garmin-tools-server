@@ -19,7 +19,7 @@
 
         <button
           type="submit"
-          :disabled="!selectedFile || loading"
+          :disabled="!selectedFile || !conversion || loading"
           class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
           <span v-if="!loading">Upload</span>
@@ -39,11 +39,10 @@ import { ref } from 'vue'
 import axios from 'axios'
 
 const selectedFile = ref(null)
-const conversion = ref('')
+const conversion = ref(null)
 const message = ref('')
 const loading = ref(false)
 
-const API_URL = 'http://localhost:8080/api/schedule/'
 
 function handleFileChange(event) {
   selectedFile.value = event.target.files[0]
@@ -51,9 +50,13 @@ function handleFileChange(event) {
 
 async function uploadFile() {
   if (!selectedFile.value) return
+  if (!conversion.value) return
 
   loading.value = true
   message.value = 'Uploading file...'
+
+  const API_URL = import.meta.env.VITE_BACKEND_URI + '/api/schedule';
+//const API_URL = 'http://localhost:8080/api/schedule/'
 
   try {
     const formData = new FormData()
