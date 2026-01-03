@@ -1,7 +1,10 @@
 package com.johnpickup.garmintools.config;
 
+import com.johnpickup.garmin.fit.converter.CourseConverter;
 import com.johnpickup.garmintools.convert.ExcelToFitZip;
 import com.johnpickup.garmintools.convert.ExcelToIcal;
+import com.johnpickup.garmintools.convert.GpxToFit;
+import com.johnpickup.gpx.GpxReader;
 import com.johnpickup.workout.excel.ExcelWorkoutScheduleReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,4 +26,18 @@ public class AppConfig {
         return new ExcelWorkoutScheduleReader();
     }
 
+    @Bean
+    GpxToFit gpxToFit() {
+        return new GpxToFit(gpxReader(), courseConverter());
+    }
+
+    @Bean
+    GpxReader gpxReader() {
+        return new GpxReader();
+    }
+
+    @Bean
+    CourseConverter courseConverter() {
+        return new CourseConverter();
+    }
 }
