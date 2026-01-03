@@ -1,17 +1,19 @@
 <template>
-  <header>
-    <img alt="App logo" class="logo" src="./assets/garmin-logo.png" width="125" height="125" />
-
-    <div class="wrapper">
-       <router-view/>
-    </div>
-
-  </header>
+  <full-page title="Excel to FIT">
+    <FileUpload description="Convert an Excel workout to a collection of Garmin FIT workout files, packaged as a ZIP." url="/api/schedule/fit"/>
+  </full-page>
 </template>
 
 <script>
+import FullPage from '@/components/page/FullPage.vue';
+import FileUpload from '@/components/FileUpload.vue'
+
 export default {
-  name: 'App'
+  name: 'ExcelToFitPage',
+  components: {
+    FullPage,
+    FileUpload
+  }
 }
 </script>
 
@@ -42,4 +44,4 @@ header {
     flex-wrap: wrap;
   }
 }
-</style>
+</style>>

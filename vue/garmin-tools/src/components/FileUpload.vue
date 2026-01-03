@@ -1,7 +1,6 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8">
-    <div class="bg-white shadow-xl rounded-2xl p-6 w-full max-w-md">
-      <h1 class="text-2xl font-bold mb-4 text-center">Convert Excel workout to Garmin FIT or iCal</h1>
+  <div class="file-upload">
+      <h3>{{ description }}</h3>
 
       <form @submit.prevent="uploadFile" class="space-y-4">
         <input
@@ -9,17 +8,9 @@
           @change="handleFileChange"
           class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2"
         />
-
-        <div>Conversion: {{ conversion }}<br/>
-        <input type="radio" id="FIT" name="conversion" value="fit" v-model="conversion">
-        <label for="FIT">Garmin FIT</label>
-        <input type="radio" id="ICS" name="conversion" value="ics" v-model="conversion">
-        <label for="ICS">iCal</label>
-        </div>
-
         <button
           type="submit"
-          :disabled="!selectedFile || !conversion || loading"
+          :disabled="!selectedFile || loading"
           class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
           <span v-if="!loading">Upload</span>
@@ -30,7 +21,6 @@
       <div v-if="message" class="mt-4 text-center text-gray-700">
         {{ message }}
       </div>
-    </div>
   </div>
 </template>
 
@@ -38,11 +28,19 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
+const props = defineProps({
+  description: {
+    type: String,
+    default: ''
+  },
+  url: {
+    type: String
+  }
+}
+)
 const selectedFile = ref(null)
-const conversion = ref(null)
 const message = ref('')
 const loading = ref(false)
-
 
 function handleFileChange(event) {
   selectedFile.value = event.target.files[0]
@@ -50,20 +48,15 @@ function handleFileChange(event) {
 
 async function uploadFile() {
   if (!selectedFile.value) return
-  if (!conversion.value) return
 
   loading.value = true
   message.value = 'Uploading file...'
-
-  const API_URL = import.meta.env.VITE_BACKEND_URI + '/api/schedule';
-//const API_URL = 'http://localhost:8080/api/schedule/'
 
   try {
     const formData = new FormData()
     formData.append('file', selectedFile.value)
 
-    const post_url = API_URL + conversion.value
-
+    const post_url =  import.meta.env.VITE_BACKEND_URI + props.url;
     const response = await axios.post(post_url, formData, {
       responseType: 'blob', // important for binary data
       headers: {
@@ -103,7 +96,8 @@ async function uploadFile() {
 </script>
 
 <style scoped>
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+.file-upload {
+
 }
+
 </style>
