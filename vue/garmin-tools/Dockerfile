@@ -2,6 +2,10 @@
 FROM node:25-alpine3.21 AS build
 WORKDIR /app
 
+# Accept backend URI as a build argument (Vite bakes it into the JS bundle)
+ARG VITE_BACKEND_URI
+ENV VITE_BACKEND_URI=${VITE_BACKEND_URI}
+
 # Install dependencies separately for better caching
 COPY package*.json ./
 RUN npm install

@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: garmintools-java-backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: vue/garmin-tools
+      dockerfile: Dockerfile
+      args:
+        # VITE_BACKEND_URI is baked into the JS bundle at build time.
+        # This points the browser at the backend exposed on localhost:8080.
+        VITE_BACKEND_URI: "http://localhost:8080"
+    container_name: garmintools-vue-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
