@@ -1,14 +1,20 @@
 services:
-  frontend:
-    image: jwpickup/garmintools-vue
-    container_name: garmintools-vue-frontend
-    ports:
-      - "8081:80"
-    depends_on:
-      - backend
 
   backend:
     image: jwpickup/garmintools-server
     container_name: garmintools-java-backend
     ports:
       - "8080:8080"
+  frontend:
+    image: jwpickup/garmintools-vue
+    build:
+      context: vue/garmin-tools
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_URI: "http://garmin-tools-backend.pickup-dev.uk"
+    container_name: garmintools-vue-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+
