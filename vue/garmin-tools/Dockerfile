@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # --- Stage 2: Serve the built files with NGINX ---
-FROM nginx:alpine
+FROM docker.io/library/nginx:alpine
 # Remove default static assets and replace with our Vue build
 RUN rm -rf /usr/share/nginx/html/*
 
