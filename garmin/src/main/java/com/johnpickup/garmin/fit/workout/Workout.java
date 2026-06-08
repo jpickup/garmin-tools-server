@@ -34,6 +34,7 @@ public class Workout implements FitGenerator {
         this.subSport = subSport;
         this.steps = steps;
         this.poolLength = poolLength;
+        getSerialNo();
     }
 
     public String getName() {
@@ -120,4 +121,15 @@ public class Workout implements FitGenerator {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Workout workout = (Workout) o;
+        return Objects.equals(name, workout.name) && Objects.equals(serialNo, workout.serialNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, serialNo);
+    }
 }

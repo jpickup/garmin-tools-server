@@ -9,10 +9,8 @@ import com.johnpickup.garmin.parser.Workout;
 import com.johnpickup.garmin.parser.WorkoutSchedule;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Created by john on 12/01/2017.
@@ -31,7 +29,7 @@ public class WorkoutScheduleConverter {
         PaceConverterFactory.getInstance().register(namedPaceConverter, PaceName.class);
     }
 
-    public void convert(WorkoutSchedule workoutSchedule) {
+    public void convert(WorkoutSchedule workoutSchedule, Integer maxSchedule) {
         init();
         log.debug("Converting paces");
         for (Map.Entry<String, Pace> namedPace : workoutSchedule.getPaces().entrySet()) {
@@ -42,6 +40,12 @@ public class WorkoutScheduleConverter {
         log.debug("Done converting paces");
 
         WorkoutConverter workoutConverter = new WorkoutConverter();
+
+        if (maxSchedule != null) {
+            log.info("Limiting schedule to a maximum of {} distinct workouts", maxSchedule);
+        }
+
+        int maxScheduleInt = Optional.ofNullable(maxSchedule).orElse(Integer.MAX_VALUE);
 
         log.debug("Converting workouts");
         for (Map.Entry<String, Workout> workoutEntry : workoutSchedule.getWorkouts().entrySet()) {
@@ -54,17 +58,51 @@ public class WorkoutScheduleConverter {
         }
         log.debug("Done converting workouts");
 
+        List<com.johnpickup.garmin.fit.workout.Workout> distinctScheduledGarminWorkouts = new ArrayList<>();
         log.debug("Converting schedules");
         for (ScheduledWorkout scheduledWorkout: workoutSchedule.getSchedule()) {
             Workout workout = scheduledWorkout.getWorkout();
             com.johnpickup.garmin.fit.workout.Workout garminWorkout = workoutMap.get(workout);
-            com.johnpickup.garmin.fit.schedule.ScheduledWorkout garminScheduledWorkout =
-                    new com.johnpickup.garmin.fit.schedule.ScheduledWorkout(garminWorkout, scheduledWorkout.getDate());
-            log.debug("Workout schedule: {}", garminScheduledWorkout);
-            trainingSchedule.addScheduledWorkout(garminScheduledWorkout);
+            if (scheduledWorkout.getDate().isBefore(LocalDate.now())) {
+                log.info("Skipping {} scheduled for {} as it is before today",
+                        garminWorkout.getName(),
+                        scheduledWorkout.getDate());
+            } else {
+                if (!distinctScheduledGarminWorkouts.contains(garminWorkout)) {
+                    if (distinctScheduledGarminWorkouts.size() >= maxScheduleInt) {
+                        log.info("Skipping {} scheduled for {} as it exceeds the maximum number",
+                                garminWorkout.getName(),
+                                scheduledWorkout.getDate());
+                        continue;
+                    } else {
+                        distinctScheduledGarminWorkouts.add(garminWorkout);
+                    }
+                }
+                com.johnpickup.garmin.fit.schedule.ScheduledWorkout garminScheduledWorkout =
+                        new com.johnpickup.garmin.fit.schedule.ScheduledWorkout(garminWorkout, scheduledWorkout.getDate());
+                log.debug("Workout schedule: {}", garminScheduledWorkout);
+                trainingSchedule.addScheduledWorkout(garminScheduledWorkout);
+            }
+        }
+        if (garminWorkouts.size() > maxScheduleInt) {
+            trimGarminWorkouts(maxScheduleInt, distinctScheduledGarminWorkouts);
         }
         log.debug("Done converting schedules");
+    }
 
+    private void trimGarminWorkouts(int maxWorkouts, List<com.johnpickup.garmin.fit.workout.Workout> scheduledGarminWorkouts) {
+        // start with the scheduled workouts
+        Set<com.johnpickup.garmin.fit.workout.Workout> limitedWorkouts = new HashSet<>(scheduledGarminWorkouts);
+
+        // if there is still space add in any more
+        for (com.johnpickup.garmin.fit.workout.Workout garminWorkout : garminWorkouts) {
+            if (limitedWorkouts.size() < maxWorkouts) {
+                limitedWorkouts.add(garminWorkout);
+            }
+        }
+        garminWorkouts.clear();
+        garminWorkouts.addAll(limitedWorkouts);
+        log.info("Trimmed the number of workouts to {}", garminWorkouts.size());
     }
 
     private void init() {

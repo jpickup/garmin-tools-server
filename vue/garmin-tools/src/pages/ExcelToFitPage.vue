@@ -1,6 +1,6 @@
 <template>
   <full-page title="Excel to FIT">
-    <FileUpload description="Convert an Excel workout to a collection of Garmin FIT workout files, packaged as a ZIP." url="/api/schedule/fit"/>
+    <FileUpload description="Convert an Excel workout to a collection of Garmin FIT workout files, packaged as a ZIP." url="/api/schedule/fit" :show-max-schedule="true"/>
   </full-page>
 </template>
 

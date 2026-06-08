@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +27,10 @@ public class WorkoutScheduleController {
     ExcelToIcal excelToIcal;
 
     @PostMapping("/fit")
-    public ResponseEntity<byte[]> convertExcelToFitZip(@RequestPart MultipartFile file) {
+    public ResponseEntity<byte[]> convertExcelToFitZip(
+            @RequestPart MultipartFile file,
+            @RequestParam(required = false) Integer maxSchedule) {
+        excelToFitZip.setMaxSchedule(maxSchedule);
         return performConversion(file, excelToFitZip, "zip");
     }
 

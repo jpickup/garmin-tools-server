@@ -8,6 +8,27 @@
           @change="handleFileChange"
           class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2"
         />
+
+        <div v-if="showMaxSchedule" class="flex items-center gap-3">
+          <input
+            id="maxScheduleEnabled"
+            type="checkbox"
+            v-model="maxScheduleEnabled"
+            class="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <label for="maxScheduleEnabled" class="text-sm text-gray-700">
+            Limit number of workouts
+          </label>
+          <input
+            v-if="maxScheduleEnabled"
+            type="number"
+            v-model.number="maxScheduleValue"
+            min="1"
+            class="w-24 text-sm text-gray-700 border border-gray-300 rounded-lg p-1"
+            placeholder="Max"
+          />
+        </div>
+
         <button
           type="submit"
           :disabled="!selectedFile || loading"
@@ -35,12 +56,18 @@ const props = defineProps({
   },
   url: {
     type: String
+  },
+  showMaxSchedule: {
+    type: Boolean,
+    default: false
   }
-}
-)
+})
+
 const selectedFile = ref(null)
 const message = ref('')
 const loading = ref(false)
+const maxScheduleEnabled = ref(false)
+const maxScheduleValue = ref(25)
 
 function handleFileChange(event) {
   selectedFile.value = event.target.files[0]
@@ -54,9 +81,13 @@ async function uploadFile() {
 
   try {
     const formData = new FormData()
-    formData.append('file', selectedFile.value)
+    formData.append('file', selectedFile.value);
 
-    const post_url =  import.meta.env.VITE_BACKEND_URI + props.url;
+    let post_url = import.meta.env.VITE_BACKEND_URI + props.url;
+    if (props.showMaxSchedule && maxScheduleEnabled.value && maxScheduleValue.value) {
+      post_url += `?maxSchedule=${maxScheduleValue.value}`;
+    }
+
     const response = await axios.post(post_url, formData, {
       responseType: 'blob', // important for binary data
       headers: {

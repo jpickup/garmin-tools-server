@@ -6,6 +6,7 @@ import com.johnpickup.garmin.fit.workout.Workout;
 import com.johnpickup.garmin.parser.WorkoutSchedule;
 import com.johnpickup.workout.excel.ExcelWorkoutScheduleReader;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import tools.jackson.databind.ObjectMapper;
@@ -20,23 +21,25 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 public class ExcelToFitZip implements ExcelConverter {
     private final ExcelWorkoutScheduleReader excelWorkoutScheduleReader;
+    @Setter
+    private Integer maxSchedule = null;
 
     public byte[] convertXls(InputStream excelInputStream) throws IOException {
         WorkoutSchedule workoutSchedule = excelWorkoutScheduleReader.readXlsStream(excelInputStream);
-        return convertWorkout(workoutSchedule);
+        return convertWorkout(workoutSchedule, maxSchedule);
     }
 
     public byte[] convertXlsx(InputStream excelInputStream) throws IOException {
         WorkoutSchedule workoutSchedule = excelWorkoutScheduleReader.readXlsxStream(excelInputStream);
-        return convertWorkout(workoutSchedule);
+        return convertWorkout(workoutSchedule, maxSchedule);
     }
 
-    private byte[] convertWorkout(WorkoutSchedule workoutSchedule) throws IOException {
+    private byte[] convertWorkout(WorkoutSchedule workoutSchedule, Integer maxSchedule) throws IOException {
         WorkoutScheduleConverter converter = new WorkoutScheduleConverter();
         WorkoutSaver workoutSaver = new WorkoutSaver();
 
         log.info("Converting workout schedule");
-        converter.convert(workoutSchedule);
+        converter.convert(workoutSchedule, maxSchedule);
 
         ObjectMapper objectMapper = new ObjectMapper();
         if (log.isDebugEnabled()) {
