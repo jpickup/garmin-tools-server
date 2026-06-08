@@ -87,6 +87,7 @@ async function uploadFile() {
     if (props.showMaxSchedule && maxScheduleEnabled.value && maxScheduleValue.value) {
       post_url += `?maxSchedule=${maxScheduleValue.value}`;
     }
+    console.log('Posting to URL:', post_url);
 
     const response = await axios.post(post_url, formData, {
       responseType: 'blob', // important for binary data

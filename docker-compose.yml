@@ -1,17 +1,19 @@
 services:
 
   backend:
-    image: jwpickup/garmintools-server
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: garmintools-java-backend
     ports:
       - "8080:8080"
   frontend:
-    image: jwpickup/garmintools-vue
     build:
       context: vue/garmin-tools
       dockerfile: Dockerfile
       args:
-        VITE_BACKEND_URI: "http://garmin-tools-backend.pickup-dev.uk"
+        # VITE_BACKEND_URI is baked into the JS bundle at build time.
+        VITE_BACKEND_URI: "https://garmin-tools-backend.pickup-dev.uk"
     container_name: garmintools-vue-frontend
     ports:
       - "8081:80"

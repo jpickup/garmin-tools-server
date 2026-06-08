@@ -1,0 +1,12 @@
+The docker compose works. Build at the top-level dir:
+docker compose up --build
+
+
+The individual docker files work too, but only if the frontend is given the backend URI. 
+Backend:
+docker build .
+
+Frontend:
+docker build . --build-arg VITE_BACKEND_URI=https://garmin-tools-backend.pickup-dev.uk
+
+start them up with backend on 8080:8080 and frontend on 8081:80
