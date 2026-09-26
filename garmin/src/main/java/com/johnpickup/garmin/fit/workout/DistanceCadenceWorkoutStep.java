@@ -36,6 +36,7 @@ public class DistanceCadenceWorkoutStep extends WorkoutStep {
         step.setDurationType(WktStepDuration.DISTANCE);
         step.setDurationDistance(distance.toGarminDistance());
         step.setTargetType(WktStepTarget.CADENCE);
+        step.setTargetValue(cadenceTarget.getTargetValue());
         step.setMessageIndex(generateWorkoutStepIndex());
         step.setCustomTargetValueLow(cadenceTarget.getGarminLow());
         step.setCustomTargetValueHigh(cadenceTarget.getGarminHigh());
