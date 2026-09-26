@@ -3,14 +3,14 @@ package com.johnpickup.garmin.common.unit;
 import lombok.Getter;
 
 @Getter
-public enum PowerUnit {
-    WATTS("watts","W");
+public enum CadenceUnit {
+    RPM("rpm","rpm");
 
     private final String description;
 
     final String shortName;
 
-    PowerUnit(String description, String shortName) {
+    CadenceUnit(String description, String shortName) {
         this.description = description;
         this.shortName = shortName;
     }
@@ -20,4 +20,3 @@ public enum PowerUnit {
         return description;
     }
 }
-
