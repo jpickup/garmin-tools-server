@@ -4,7 +4,7 @@ import com.garmin.fit.Intensity;
 import com.garmin.fit.WktStepDuration;
 import com.garmin.fit.WktStepTarget;
 import com.garmin.fit.WorkoutStepMesg;
-import com.johnpickup.garmin.common.unit.PowerTarget;
+import com.johnpickup.garmin.common.unit.CadenceTarget;
 import com.johnpickup.garmin.common.unit.Time;
 
 import java.util.Collections;
@@ -12,21 +12,21 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Simple workout that lasts a specific distance with a power target
+ * Simple workout that lasts a specific distance with a cadence target
  */
-public class TimePowerWorkoutStep extends WorkoutStep {
+public class TimeCadenceWorkoutStep extends WorkoutStep {
     private final Time time;
-    private final PowerTarget powerTarget;
+    private final CadenceTarget cadenceTarget;
 
-    public TimePowerWorkoutStep(Intensity intensity, Time time, PowerTarget powerTarget) {
+    public TimeCadenceWorkoutStep(Intensity intensity, Time time, CadenceTarget cadenceTarget) {
         super(intensity);
         this.time = time;
-        this.powerTarget = powerTarget;
+        this.cadenceTarget = cadenceTarget;
     }
 
     @Override
     public String getName() {
-        return time.toString() + " " + powerTarget.toString();
+        return time.toString() + " " + cadenceTarget.toString();
     }
 
     @Override
@@ -35,11 +35,11 @@ public class TimePowerWorkoutStep extends WorkoutStep {
         step.setIntensity(intensity);
         step.setDurationType(WktStepDuration.TIME);
         step.setDurationDistance(time.toGarminTime());
-        step.setTargetType(WktStepTarget.POWER);
-        step.setTargetValue(powerTarget.getTargetValue());
+        step.setTargetType(WktStepTarget.CADENCE);
+        step.setTargetValue(cadenceTarget.getTargetValue());
         step.setMessageIndex(generateWorkoutStepIndex());
-        step.setCustomTargetValueLow(powerTarget.getGarminLow());
-        step.setCustomTargetValueHigh(powerTarget.getGarminHigh());
+        step.setCustomTargetValueLow(cadenceTarget.getGarminLow());
+        step.setCustomTargetValueHigh(cadenceTarget.getGarminHigh());
         step.setNotes(nameWithIntensity());
         return Collections.singletonList(step);
     }
@@ -48,17 +48,17 @@ public class TimePowerWorkoutStep extends WorkoutStep {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TimePowerWorkoutStep that = (TimePowerWorkoutStep) o;
-        return Objects.equals(time, that.time) && Objects.equals(powerTarget, that.powerTarget);
+        TimeCadenceWorkoutStep that = (TimeCadenceWorkoutStep) o;
+        return Objects.equals(time, that.time) && Objects.equals(cadenceTarget, that.cadenceTarget);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time, powerTarget);
+        return Objects.hash(time, cadenceTarget);
     }
 
     protected boolean canEqual(final Object other) {
-        return other instanceof TimePowerWorkoutStep;
+        return other instanceof TimeCadenceWorkoutStep;
     }
 
 }
