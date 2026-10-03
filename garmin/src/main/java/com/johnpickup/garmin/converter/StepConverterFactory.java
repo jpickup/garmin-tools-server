@@ -1,12 +1,18 @@
 package com.johnpickup.garmin.converter;
 
-import com.johnpickup.garmin.parser.*;
+import com.johnpickup.garmin.parser.DistanceStep;
+import com.johnpickup.garmin.parser.OpenStep;
+import com.johnpickup.garmin.parser.RepeatingSteps;
+import com.johnpickup.garmin.parser.Step;
+import com.johnpickup.garmin.parser.TimeStep;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Factory that given a type of workout step with return an instance of the appropriate converter class
+ * Factory that given a type of workout step returns an instance of the appropriate converter.
+ * After the refactoring there are only 4 step types: DistanceStep, TimeStep, OpenStep, RepeatingSteps.
+ * Target conversion is handled inside each step converter via TargetConverterFactory.
  */
 public class StepConverterFactory {
     private static StepConverterFactory instance;
@@ -14,20 +20,8 @@ public class StepConverterFactory {
 
     private StepConverterFactory() {
         register(new DistanceStepConverter(), DistanceStep.class);
-        register(new DistancePaceStepConverter(), DistancePaceStep.class);
-        register(new DistanceHeartRateStepConverter(), DistanceHeartRateStep.class);
-        register(new DistancePowerStepConverter(), DistancePowerStep.class);
-        register(new DistanceCadenceStepConverter(), DistanceCadenceStep.class);
         register(new TimeStepConverter(), TimeStep.class);
-        register(new TimePaceStepConverter(), TimePaceStep.class);
-        register(new TimeHeartRateStepConverter(), TimeHeartRateStep.class);
-        register(new TimePowerStepConverter(), TimePowerStep.class);
-        register(new TimeCadenceStepConverter(), TimeCadenceStep.class);
         register(new OpenStepConverter(), OpenStep.class);
-        register(new OpenPaceStepConverter(), OpenPaceStep.class);
-        register(new OpenHeartRateStepConverter(), OpenHeartRateStep.class);
-        register(new OpenPowerStepConverter(), OpenPowerStep.class);
-        register(new OpenCadenceStepConverter(), OpenCadenceStep.class);
         register(new RepeatingStepsConverter(), RepeatingSteps.class);
     }
 
@@ -38,7 +32,7 @@ public class StepConverterFactory {
         return instance;
     }
 
-    private void register(StepConverter converter,Class stepClass) {
+    private void register(StepConverter converter, Class stepClass) {
         converters.put(stepClass, converter);
     }
 

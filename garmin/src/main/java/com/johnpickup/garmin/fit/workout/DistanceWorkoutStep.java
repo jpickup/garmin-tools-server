@@ -2,28 +2,38 @@ package com.johnpickup.garmin.fit.workout;
 
 import com.garmin.fit.Intensity;
 import com.garmin.fit.WktStepDuration;
-import com.garmin.fit.WktStepTarget;
 import com.garmin.fit.WorkoutStepMesg;
 import com.johnpickup.garmin.common.unit.Distance;
+import com.johnpickup.garmin.common.unit.NoTarget;
+import com.johnpickup.garmin.common.unit.Target;
+import lombok.EqualsAndHashCode;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * Simple workout that lasts a specific distance, no pace targets
+ * Workout step that lasts a specific distance, carrying any target type.
  */
+@EqualsAndHashCode(callSuper = true)
 public class DistanceWorkoutStep extends WorkoutStep {
     private final Distance distance;
+    private final Target target;
 
     public DistanceWorkoutStep(Intensity intensity, Distance distance) {
         super(intensity);
         this.distance = distance;
+        this.target = NoTarget.INSTANCE;
+    }
+
+    public DistanceWorkoutStep(Intensity intensity, Distance distance, Target target) {
+        super(intensity);
+        this.distance = distance;
+        this.target = target != null ? target : NoTarget.INSTANCE;
     }
 
     @Override
     public String getName() {
-        return distance.toString();
+        return distance.toString() + (target instanceof NoTarget ? "" : " " + target);
     }
 
     @Override
@@ -32,29 +42,12 @@ public class DistanceWorkoutStep extends WorkoutStep {
         step.setIntensity(intensity);
         step.setDurationType(WktStepDuration.DISTANCE);
         step.setDurationDistance(distance.toGarminDistance());
-        step.setTargetType(WktStepTarget.OPEN);
+        step.setTargetType(WktStepTargetMapper.toWktStepTarget(target.getTargetType()));
+        step.setTargetValue(target.getTargetValue());
         step.setMessageIndex(generateWorkoutStepIndex());
-        step.setTargetValue(0L);
+        step.setCustomTargetValueLow(target.getGarminLow());
+        step.setCustomTargetValueHigh(target.getGarminHigh());
         step.setNotes(nameWithIntensity());
-
         return Collections.singletonList(step);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DistanceWorkoutStep that = (DistanceWorkoutStep) o;
-        return Objects.equals(distance, that.distance);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(distance);
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof DistanceWorkoutStep;
-    }
-
 }

@@ -1,10 +1,11 @@
 package com.johnpickup.garmin.common.unit;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
 
 /**
  * Power target - a minimum and maximum power in watts
  */
+@EqualsAndHashCode(callSuper = false)
 public class CustomPowerTarget extends PowerTarget {
     private final Power maxPower;
     private final Power minPower;
@@ -36,17 +37,5 @@ public class CustomPowerTarget extends PowerTarget {
     @Override
     public Long getTargetValue() {
         return 0L;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        CustomPowerTarget that = (CustomPowerTarget) o;
-        return Objects.equals(maxPower, that.maxPower) && Objects.equals(minPower, that.minPower);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxPower, minPower);
     }
 }
