@@ -62,7 +62,15 @@ async function uploadFile() {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      validateStatus: () => true,  // never throw on HTTP error status
     })
+
+    // Check for an error response before treating it as a download
+    if (response.status >= 400) {
+      const text = await response.data.text()
+      message.value = 'Error: ' + (text || 'Upload failed.')
+      return
+    }
 
     console.log(response.headers);
     // Extract filename from response headers (optional)
@@ -88,13 +96,7 @@ async function uploadFile() {
     message.value = 'File converted successfully!'
   } catch (error) {
     console.error(error)
-    // The response is a blob even on error — read it back as text to get the server's message
-    if (error.response && error.response.data instanceof Blob) {
-      const text = await error.response.data.text()
-      message.value = 'Error: ' + (text || 'Upload failed.')
-    } else {
-      message.value = 'Error during upload or download.'
-    }
+    message.value = 'Error during upload or download.'
   } finally {
     loading.value = false
   }
