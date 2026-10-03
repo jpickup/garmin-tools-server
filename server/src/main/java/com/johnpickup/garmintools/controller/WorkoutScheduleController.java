@@ -40,7 +40,9 @@ public class WorkoutScheduleController {
 
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (extension == null) {
-            throw new RuntimeException("File has no filename");
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("File has no filename".getBytes());
         }
 
         try {
@@ -57,7 +59,6 @@ public class WorkoutScheduleController {
 
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=" + outputFilename)
-                    //.header("Access-Control-Allow-Origin", "*")       // already in WebConfig
                     .header("Access-Control-Expose-Headers", "*")
                     .header("Access-Control-Allow-Headers", "*")
                     .contentLength(bytes.length)
@@ -65,7 +66,10 @@ public class WorkoutScheduleController {
                     .body(bytes);
         } catch (Exception e) {
             log.error("Error processing Excel file upload of {}", file.getOriginalFilename(), e);
-            throw new RuntimeException("File is not a valid training schedule");
+            String message = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(message.getBytes());
         }
     }
 }

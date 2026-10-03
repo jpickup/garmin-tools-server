@@ -88,7 +88,13 @@ async function uploadFile() {
     message.value = 'File converted successfully!'
   } catch (error) {
     console.error(error)
-    message.value = 'Error during upload or download.'
+    // The response is a blob even on error — read it back as text to get the server's message
+    if (error.response && error.response.data instanceof Blob) {
+      const text = await error.response.data.text()
+      message.value = 'Error: ' + (text || 'Upload failed.')
+    } else {
+      message.value = 'Error during upload or download.'
+    }
   } finally {
     loading.value = false
   }
