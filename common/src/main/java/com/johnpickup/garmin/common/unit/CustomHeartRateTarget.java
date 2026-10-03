@@ -1,10 +1,11 @@
 package com.johnpickup.garmin.common.unit;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
 
 /**
  * Heart Rate target - a minimum and maximum HR
  */
+@EqualsAndHashCode(callSuper = false)
 public class CustomHeartRateTarget extends HeartRateTarget {
     private final HeartRate maxHeartRate;
     private final HeartRate minHeartRate;
@@ -37,22 +38,4 @@ public class CustomHeartRateTarget extends HeartRateTarget {
     public Long getTargetValue() {
         return 0L;
     }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof CustomHeartRateTarget;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CustomHeartRateTarget that = (CustomHeartRateTarget) o;
-        return Objects.equals(maxHeartRate, that.maxHeartRate) && Objects.equals(minHeartRate, that.minHeartRate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxHeartRate, minHeartRate);
-    }
-
 }
