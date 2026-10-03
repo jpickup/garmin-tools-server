@@ -4,14 +4,15 @@ import com.garmin.fit.Intensity;
 import com.garmin.fit.WktStepDuration;
 import com.garmin.fit.WktStepTarget;
 import com.garmin.fit.WorkoutStepMesg;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Workout that repeats the component steps a specific number of times
  */
+@EqualsAndHashCode(callSuper = true)
 public class RepeatingStepsWorkoutStep extends WorkoutStep {
     private final int intervalCount;
     private final List<WorkoutStep> steps;
@@ -24,13 +25,13 @@ public class RepeatingStepsWorkoutStep extends WorkoutStep {
 
     @Override
     public String getName() {
-        String result = String.format("%d x (",intervalCount);
+        StringBuilder result = new StringBuilder(String.format("%d x (", intervalCount));
         for (WorkoutStep step : steps) {
-            result += step.getName() + '+';
+            result.append(step.getName()).append('+');
         }
-        result = result.substring(0, result.length()-1) + ')';
+        result = new StringBuilder(result.substring(0, result.length() - 1) + ')');
 
-        return result;
+        return result.toString();
     }
 
     @Override
@@ -41,7 +42,7 @@ public class RepeatingStepsWorkoutStep extends WorkoutStep {
             List<WorkoutStepMesg> workoutMesgs = step.generateWorkoutSteps();
             result.addAll(workoutMesgs);
         }
-        int startIntervalIndex = result.get(0).getMessageIndex();
+        int startIntervalIndex = result.getFirst().getMessageIndex();
 
         WorkoutStepMesg repeatStep = new WorkoutStepMesg();
         repeatStep.setIntensity(Intensity.INTERVAL);
@@ -55,22 +56,4 @@ public class RepeatingStepsWorkoutStep extends WorkoutStep {
 
         return result;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RepeatingStepsWorkoutStep that = (RepeatingStepsWorkoutStep) o;
-        return intervalCount == that.intervalCount && Objects.equals(steps, that.steps);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(intervalCount, steps);
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof RepeatingStepsWorkoutStep;
-    }
-
 }
