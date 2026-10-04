@@ -2,6 +2,7 @@ package com.johnpickup.garmin.fit.workout;
 
 import com.garmin.fit.*;
 import com.johnpickup.garmin.fit.FitGenerator;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ public class Workout implements FitGenerator {
     private final SubSport subSport;
     private final Integer poolLength;
 
+    @Setter
     private String name;
     private Long serialNo;
 
@@ -40,13 +42,13 @@ public class Workout implements FitGenerator {
         if (name != null && !name.isEmpty()) {
             return name;
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (WorkoutStep step : steps) {
             if (!result.isEmpty())
-                result = result + " + ";
-            result = result + step.getName();
+                result.append(" + ");
+            result.append(step.getName());
         }
-        return result;
+        return result.toString();
     }
 
     @Override
@@ -115,9 +117,4 @@ public class Workout implements FitGenerator {
         workout.setNumValidSteps(allWorkoutStepMesgs.size());
         return messages;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

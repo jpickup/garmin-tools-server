@@ -1,10 +1,11 @@
 package com.johnpickup.garmin.common.unit;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
 
 /**
  * Cadence target - a minimum and maximum cadence in rpm
  */
+@EqualsAndHashCode(callSuper = false)
 public class CustomCadenceTarget extends CadenceTarget {
     private final Cadence maxCadence;
     private final Cadence minCadence;
@@ -36,17 +37,5 @@ public class CustomCadenceTarget extends CadenceTarget {
     @Override
     public Long getTargetValue() {
         return 0L;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        CustomCadenceTarget that = (CustomCadenceTarget) o;
-        return Objects.equals(maxCadence, that.maxCadence) && Objects.equals(minCadence, that.minCadence);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxCadence, minCadence);
     }
 }

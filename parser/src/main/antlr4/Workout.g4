@@ -8,7 +8,7 @@ Examples:
     1mi @ Z3                    - 1mi at heart rate Zone 3
     2km @ 120-150bpm            - 2km at a heart rate between 120 and 150 beats per minute
     (1 mi@FAST + 400m@EASY) * 8 - interval session of 8 repeats of 1 mile fast with 400m recoveries
-    1mi|Recovery                - 1mi marked with intensity recovry
+    1mi|Recovery                - 1mi marked with intensity recovery
 */
 
 grammar Workout;
@@ -26,41 +26,25 @@ stepList returns [List<Step> steps]
    : s0=step                                    {$steps = new ArrayList<>(); $steps.add($s0.value);}
      ('+' s=stepList                            {$steps.addAll($s.steps);})?
    ;
-    
+
 step returns [Step value]
    : distance_step                              {$value = $distance_step.value;}
    | distance_intensity_step                    {$value = $distance_intensity_step.value;}
-   | distance_pace_step                         {$value = $distance_pace_step.value;}
-   | distance_pace_intensity_step               {$value = $distance_pace_intensity_step.value;}
-   | distance_hr_step                           {$value = $distance_hr_step.value;}
-   | distance_hr_intensity_step                 {$value = $distance_hr_intensity_step.value;}
-   | distance_power_step                        {$value = $distance_power_step.value;}
-   | distance_power_intensity_step              {$value = $distance_power_intensity_step.value;}
-   | distance_cadence_step                      {$value = $distance_cadence_step.value;}
-   | distance_cadence_intensity_step            {$value = $distance_cadence_intensity_step.value;}
+   | distance_target_step                       {$value = $distance_target_step.value;}
+   | distance_target_intensity_step             {$value = $distance_target_intensity_step.value;}
    | time_step                                  {$value = $time_step.value;}
    | time_intensity_step                        {$value = $time_intensity_step.value;}
-   | time_pace_step                             {$value = $time_pace_step.value;}
-   | time_pace_intensity_step                   {$value = $time_pace_intensity_step.value;}
-   | time_hr_step                               {$value = $time_hr_step.value;}
-   | time_hr_intensity_step                     {$value = $time_hr_intensity_step.value;}
-   | time_power_step                            {$value = $time_power_step.value;}
-   | time_power_intensity_step                  {$value = $time_power_intensity_step.value;}
-   | time_cadence_step                          {$value = $time_cadence_step.value;}
-   | time_cadence_intensity_step                {$value = $time_cadence_intensity_step.value;}
+   | time_target_step                           {$value = $time_target_step.value;}
+   | time_target_intensity_step                 {$value = $time_target_intensity_step.value;}
    | open_step                                  {$value = $open_step.value;}
    | open_intensity_step                        {$value = $open_intensity_step.value;}
-   | open_pace_step                             {$value = $open_pace_step.value;}
-   | open_pace_intensity_step                   {$value = $open_pace_intensity_step.value;}
-   | open_hr_step                               {$value = $open_hr_step.value;}
-   | open_hr_intensity_step                     {$value = $open_hr_intensity_step.value;}
-   | open_power_step                            {$value = $open_power_step.value;}
-   | open_power_intensity_step                  {$value = $open_power_intensity_step.value;}
-   | open_cadence_step                          {$value = $open_cadence_step.value;}
-   | open_cadence_intensity_step                {$value = $open_cadence_intensity_step.value;}
+   | open_target_step                           {$value = $open_target_step.value;}
+   | open_target_intensity_step                 {$value = $open_target_intensity_step.value;}
    | repeating_steps                            {$value = $repeating_steps.value;}
    ;
-   
+
+// ----- Distance steps -----
+
 distance_step returns [DistanceStep value]
    : distance                                   {$value = new DistanceStep($distance.value);}
    ;
@@ -69,45 +53,30 @@ distance_intensity_step returns [DistanceStep value]
    : distance PIPE intensity                    {$value = new DistanceStep($intensity.value, $distance.value);}
    ;
 
-distance_pace_step returns [DistancePaceStep value]
-   : distance '<' pace                          {$value = new DistancePaceStep($distance.value, new MaximumPace($pace.value));}
-   | distance '>' pace                          {$value = new DistancePaceStep($distance.value, new MinimumPace($pace.value));}
-   | distance '@' pace_range                    {$value = new DistancePaceStep($distance.value, $pace_range.value);}
+distance_target_step returns [DistanceStep value]
+   : distance '<' pace                          {$value = new DistanceStep($distance.value, new MaximumPace($pace.value));}
+   | distance '>' pace                          {$value = new DistanceStep($distance.value, new MinimumPace($pace.value));}
+   | distance '@' pace_range                    {$value = new DistanceStep($distance.value, $pace_range.value);}
+   | distance '@' hr_range                      {$value = new DistanceStep($distance.value, $hr_range.value);}
+   | distance '@' hr_zone                       {$value = new DistanceStep($distance.value, $hr_zone.value);}
+   | distance '@' power_range                   {$value = new DistanceStep($distance.value, $power_range.value);}
+   | distance '@' power_zone                    {$value = new DistanceStep($distance.value, $power_zone.value);}
+   | distance '@' cadence_range                 {$value = new DistanceStep($distance.value, $cadence_range.value);}
    ;
 
-distance_pace_intensity_step returns [DistancePaceStep value]
-   : distance '<' pace PIPE intensity           {$value = new DistancePaceStep($intensity.value, $distance.value, new MaximumPace($pace.value));}
-   | distance '>' pace PIPE intensity           {$value = new DistancePaceStep($intensity.value, $distance.value, new MinimumPace($pace.value));}
-   | distance '@' pace_range PIPE intensity     {$value = new DistancePaceStep($intensity.value, $distance.value, $pace_range.value);}
+distance_target_intensity_step returns [DistanceStep value]
+   : distance '<' pace PIPE intensity           {$value = new DistanceStep($intensity.value, $distance.value, new MaximumPace($pace.value));}
+   | distance '>' pace PIPE intensity           {$value = new DistanceStep($intensity.value, $distance.value, new MinimumPace($pace.value));}
+   | distance '@' pace_range PIPE intensity     {$value = new DistanceStep($intensity.value, $distance.value, $pace_range.value);}
+   | distance '@' hr_range PIPE intensity       {$value = new DistanceStep($intensity.value, $distance.value, $hr_range.value);}
+   | distance '@' hr_zone PIPE intensity        {$value = new DistanceStep($intensity.value, $distance.value, $hr_zone.value);}
+   | distance '@' power_range PIPE intensity    {$value = new DistanceStep($intensity.value, $distance.value, $power_range.value);}
+   | distance '@' power_zone PIPE intensity     {$value = new DistanceStep($intensity.value, $distance.value, $power_zone.value);}
+   | distance '@' cadence_range PIPE intensity  {$value = new DistanceStep($intensity.value, $distance.value, $cadence_range.value);}
    ;
 
-distance_hr_step returns [DistanceHeartRateStep value]
-   : distance '@' hr_range                      {$value = new DistanceHeartRateStep($distance.value, $hr_range.value);}
-   | distance '@' hr_zone                       {$value = new DistanceHeartRateStep($distance.value, $hr_zone.value);}
-   ;
+// ----- Time steps -----
 
-distance_hr_intensity_step returns [DistanceHeartRateStep value]
-   : distance '@' hr_range PIPE intensity       {$value = new DistanceHeartRateStep($intensity.value, $distance.value, $hr_range.value);}
-   | distance '@' hr_zone PIPE intensity        {$value = new DistanceHeartRateStep($intensity.value, $distance.value, $hr_zone.value);}
-   ;
-
-distance_power_step returns [DistancePowerStep value]
-   : distance '@' power_range                   {$value = new DistancePowerStep($distance.value, $power_range.value);}
-   | distance '@' power_zone                    {$value = new DistancePowerStep($distance.value, $power_zone.value);}
-   ;
-
-distance_power_intensity_step returns [DistancePowerStep value]
-   : distance '@' power_range PIPE intensity    {$value = new DistancePowerStep($intensity.value, $distance.value, $power_range.value);}
-   | distance '@' power_zone PIPE intensity     {$value = new DistancePowerStep($intensity.value, $distance.value, $power_zone.value);}
-   ;
-
-distance_cadence_step returns [DistanceCadenceStep value]
-   : distance '@' cadence_range                 {$value = new DistanceCadenceStep($distance.value, $cadence_range.value);}
-   ;
-
-distance_cadence_intensity_step returns [DistanceCadenceStep value]
-   : distance '@' cadence_range PIPE intensity  {$value = new DistanceCadenceStep($intensity.value, $distance.value, $cadence_range.value);}
-   ;
 time_step returns [TimeStep value]
    : time                                       {$value = new TimeStep($time.value);}
    ;
@@ -116,45 +85,29 @@ time_intensity_step returns [TimeStep value]
    : time PIPE intensity                        {$value = new TimeStep($intensity.value, $time.value);}
    ;
 
-time_pace_step returns [TimePaceStep value]
-   : time '<' pace                              {$value = new TimePaceStep($time.value, new MaximumPace($pace.value));}
-   | time '>' pace                              {$value = new TimePaceStep($time.value, new MinimumPace($pace.value));}
-   | time '@' pace_range                        {$value = new TimePaceStep($time.value, $pace_range.value);}
+time_target_step returns [TimeStep value]
+   : time '<' pace                              {$value = new TimeStep($time.value, new MaximumPace($pace.value));}
+   | time '>' pace                              {$value = new TimeStep($time.value, new MinimumPace($pace.value));}
+   | time '@' pace_range                        {$value = new TimeStep($time.value, $pace_range.value);}
+   | time '@' hr_range                          {$value = new TimeStep($time.value, $hr_range.value);}
+   | time '@' hr_zone                           {$value = new TimeStep($time.value, $hr_zone.value);}
+   | time '@' power_range                       {$value = new TimeStep($time.value, $power_range.value);}
+   | time '@' power_zone                        {$value = new TimeStep($time.value, $power_zone.value);}
+   | time '@' cadence_range                     {$value = new TimeStep($time.value, $cadence_range.value);}
    ;
 
-time_pace_intensity_step returns [TimePaceStep value]
-   : time '<' pace PIPE intensity               {$value = new TimePaceStep($intensity.value, $time.value, new MaximumPace($pace.value));}
-   | time '>' pace PIPE intensity               {$value = new TimePaceStep($intensity.value, $time.value, new MinimumPace($pace.value));}
-   | time '@' pace_range PIPE intensity         {$value = new TimePaceStep($intensity.value, $time.value, $pace_range.value);}
+time_target_intensity_step returns [TimeStep value]
+   : time '<' pace PIPE intensity               {$value = new TimeStep($intensity.value, $time.value, new MaximumPace($pace.value));}
+   | time '>' pace PIPE intensity               {$value = new TimeStep($intensity.value, $time.value, new MinimumPace($pace.value));}
+   | time '@' pace_range PIPE intensity         {$value = new TimeStep($intensity.value, $time.value, $pace_range.value);}
+   | time '@' hr_range PIPE intensity           {$value = new TimeStep($intensity.value, $time.value, $hr_range.value);}
+   | time '@' hr_zone PIPE intensity            {$value = new TimeStep($intensity.value, $time.value, $hr_zone.value);}
+   | time '@' power_range PIPE intensity        {$value = new TimeStep($intensity.value, $time.value, $power_range.value);}
+   | time '@' power_zone PIPE intensity         {$value = new TimeStep($intensity.value, $time.value, $power_zone.value);}
+   | time '@' cadence_range PIPE intensity      {$value = new TimeStep($intensity.value, $time.value, $cadence_range.value);}
    ;
 
-time_hr_step returns [TimeHeartRateStep value]
-   : time '@' hr_range                          {$value = new TimeHeartRateStep($time.value, $hr_range.value);}
-   | time '@' hr_zone                           {$value = new TimeHeartRateStep($time.value, $hr_zone.value);}
-   ;
-
-time_hr_intensity_step returns [TimeHeartRateStep value]
-   : time '@' hr_range PIPE intensity           {$value = new TimeHeartRateStep($intensity.value, $time.value, $hr_range.value);}
-   | time '@' hr_zone PIPE intensity            {$value = new TimeHeartRateStep($intensity.value, $time.value, $hr_zone.value);}
-   ;
-
-time_power_step returns [TimePowerStep value]
-   : time '@' power_range                       {$value = new TimePowerStep($time.value, $power_range.value);}
-   | time '@' power_zone                        {$value = new TimePowerStep($time.value, $power_zone.value);}
-   ;
-
-time_power_intensity_step returns [TimePowerStep value]
-   : time '@' power_range PIPE intensity        {$value = new TimePowerStep($intensity.value, $time.value, $power_range.value);}
-   | time '@' power_zone PIPE intensity         {$value = new TimePowerStep($intensity.value, $time.value, $power_zone.value);}
-   ;
-
-time_cadence_step returns [TimeCadenceStep value]
-   : time '@' cadence_range                     {$value = new TimeCadenceStep($time.value, $cadence_range.value);}
-   ;
-
-time_cadence_intensity_step returns [TimeCadenceStep value]
-   : time '@' cadence_range PIPE intensity      {$value = new TimeCadenceStep($intensity.value, $time.value, $cadence_range.value);}
-   ;
+// ----- Open steps -----
 
 open_step returns [OpenStep value]
    : open                                       {$value = new OpenStep();}
@@ -164,45 +117,29 @@ open_intensity_step returns [OpenStep value]
    : open PIPE intensity                        {$value = new OpenStep($intensity.value);}
    ;
 
-open_pace_step returns [OpenPaceStep value]
-   : open '<' pace                              {$value = new OpenPaceStep(new MaximumPace($pace.value));}
-   | open '>' pace                              {$value = new OpenPaceStep(new MinimumPace($pace.value));}
-   | open '@' pace_range                        {$value = new OpenPaceStep($pace_range.value);}
+open_target_step returns [OpenStep value]
+   : open '<' pace                              {$value = new OpenStep(new MaximumPace($pace.value));}
+   | open '>' pace                              {$value = new OpenStep(new MinimumPace($pace.value));}
+   | open '@' pace_range                        {$value = new OpenStep($pace_range.value);}
+   | open '@' hr_range                          {$value = new OpenStep($hr_range.value);}
+   | open '@' hr_zone                           {$value = new OpenStep($hr_zone.value);}
+   | open '@' power_range                       {$value = new OpenStep($power_range.value);}
+   | open '@' power_zone                        {$value = new OpenStep($power_zone.value);}
+   | open '@' cadence_range                     {$value = new OpenStep($cadence_range.value);}
    ;
 
-open_pace_intensity_step returns [OpenPaceStep value]
-   : open '<' pace PIPE intensity               {$value = new OpenPaceStep($intensity.value, new MaximumPace($pace.value));}
-   | open '>' pace PIPE intensity               {$value = new OpenPaceStep($intensity.value, new MinimumPace($pace.value));}
-   | open '@' pace_range PIPE intensity         {$value = new OpenPaceStep($intensity.value, $pace_range.value);}
+open_target_intensity_step returns [OpenStep value]
+   : open '<' pace PIPE intensity               {$value = new OpenStep($intensity.value, new MaximumPace($pace.value));}
+   | open '>' pace PIPE intensity               {$value = new OpenStep($intensity.value, new MinimumPace($pace.value));}
+   | open '@' pace_range PIPE intensity         {$value = new OpenStep($intensity.value, $pace_range.value);}
+   | open '@' hr_range PIPE intensity           {$value = new OpenStep($intensity.value, $hr_range.value);}
+   | open '@' hr_zone PIPE intensity            {$value = new OpenStep($intensity.value, $hr_zone.value);}
+   | open '@' power_range PIPE intensity        {$value = new OpenStep($intensity.value, $power_range.value);}
+   | open '@' power_zone PIPE intensity         {$value = new OpenStep($intensity.value, $power_zone.value);}
+   | open '@' cadence_range PIPE intensity      {$value = new OpenStep($intensity.value, $cadence_range.value);}
    ;
 
-open_hr_step returns [OpenHeartRateStep value]
-   : open '@' hr_range                          {$value = new OpenHeartRateStep($hr_range.value);}
-   | open '@' hr_zone                           {$value = new OpenHeartRateStep($hr_zone.value);}
-   ;
-
-open_hr_intensity_step returns [OpenHeartRateStep value]
-   : open '@' hr_range PIPE intensity           {$value = new OpenHeartRateStep($intensity.value, $hr_range.value);}
-   | open '@' hr_zone PIPE intensity            {$value = new OpenHeartRateStep($intensity.value, $hr_zone.value);}
-   ;
-
-open_power_step returns [OpenPowerStep value]
-   : open '@' power_range                       {$value = new OpenPowerStep($power_range.value);}
-   | open '@' power_zone                        {$value = new OpenPowerStep($power_zone.value);}
-   ;
-
-open_power_intensity_step returns [OpenPowerStep value]
-   : open '@' power_range PIPE intensity        {$value = new OpenPowerStep($intensity.value, $power_range.value);}
-   | open '@' power_zone PIPE intensity         {$value = new OpenPowerStep($intensity.value, $power_zone.value);}
-   ;
-
-open_cadence_step returns [OpenCadenceStep value]
-   : open '@' cadence_range                     {$value = new OpenCadenceStep($cadence_range.value);}
-   ;
-
-open_cadence_intensity_step returns [OpenCadenceStep value]
-   : open '@' cadence_range PIPE intensity      {$value = new OpenCadenceStep($intensity.value, $cadence_range.value);}
-   ;
+// ----- Repeating steps -----
 
 repeating_steps returns [RepeatingSteps value]
    : '('
@@ -211,10 +148,12 @@ repeating_steps returns [RepeatingSteps value]
      '*' cardinal                               {$value.setRepetitions($cardinal.value);}
    ;
 
+// ----- Primitives -----
+
 distance returns [Distance value]
    : number distance_unit                       {$value = new Distance($number.value, $distance_unit.value);}
    ;
-   
+
 distance_unit returns [DistanceUnit value]
    : 'm'                                        {$value = DistanceUnit.METRE;}
    | 'mi'                                       {$value = DistanceUnit.MILE;}
@@ -224,7 +163,7 @@ distance_unit returns [DistanceUnit value]
 pace returns [PaceLimit value]
    : time '/' distance_unit                     {$value = new PaceLimit($time.value, PaceUnit.perDistanceUnit($distance_unit.value));}
    ;
-   
+
 pace_range returns [Pace value]
    : t1=time HYPHEN t2=time '/' distance_unit   {$value = new PaceRange($t1.value, $t2.value, PaceUnit.perDistanceUnit($distance_unit.value));}
    | name                                       {$value = new PaceName($text);}
@@ -326,7 +265,6 @@ LETTER
    : ('a' .. 'z') | ('A' .. 'Z')
    ;
 
-
 DIGIT
    : ('0' .. '9')
    ;
@@ -334,7 +272,7 @@ DIGIT
 POINT
    : '.'
    ;
-   
+
 COLON
    : ':'
    ;

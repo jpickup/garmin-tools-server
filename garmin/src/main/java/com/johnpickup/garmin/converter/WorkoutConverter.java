@@ -59,7 +59,11 @@ public class WorkoutConverter {
     private List<com.johnpickup.garmin.fit.workout.WorkoutStep> convertStepsToGarmin(List<? extends Step> steps) {
         List<com.johnpickup.garmin.fit.workout.WorkoutStep> result = new ArrayList<>();
         for (Step step : steps) {
-            result.add(convertStepToGarmin(step));
+            try {
+                result.add(convertStepToGarmin(step));
+            } catch (Exception e) {
+                throw new RuntimeException(String.format("Error converting '%s': %s", step, e.getMessage()));
+            }
         }
         return result;
     }

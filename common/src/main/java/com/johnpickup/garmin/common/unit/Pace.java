@@ -1,18 +1,16 @@
 package com.johnpickup.garmin.common.unit;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Encapsulation of various pace/speed standards with human-readable toString plus a conversion to Garmin units
  */
+@RequiredArgsConstructor
+@EqualsAndHashCode
 public class Pace {
     private final double value;
     private final PaceUnit unit;
-
-    public Pace(double value, PaceUnit unit) {
-        this.value = value;
-        this.unit = unit;
-    }
 
     @Override
     public String toString() {
@@ -44,22 +42,4 @@ public class Pace {
         }
         return null;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pace pace = (Pace) o;
-        return Double.compare(pace.value, value) == 0 && unit == pace.unit;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value, unit);
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof Pace;
-    }
-
 }

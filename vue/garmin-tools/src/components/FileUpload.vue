@@ -62,7 +62,15 @@ async function uploadFile() {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      validateStatus: () => true,  // never throw on HTTP error status
     })
+
+    // Check for an error response before treating it as a download
+    if (response.status >= 400) {
+      const text = await response.data.text()
+      message.value = 'Error: ' + (text || 'Upload failed.')
+      return
+    }
 
     console.log(response.headers);
     // Extract filename from response headers (optional)

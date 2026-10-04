@@ -1,18 +1,16 @@
 package com.johnpickup.garmin.common.unit;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Encapsulation of custom heart rate value with human-readable toString plus a conversion to Garmin units
  */
+@RequiredArgsConstructor
+@EqualsAndHashCode
 public class HeartRate {
     private final long value;
     private final HeartRateUnit unit;
-
-    public HeartRate(long value, HeartRateUnit unit) {
-        this.value = value;
-        this.unit = unit;
-    }
 
     @Override
     public String toString() {
@@ -31,22 +29,4 @@ public class HeartRate {
             case BEATS_PER_MINUTE -> String.format("%d", value);
         };
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HeartRate heartRate = (HeartRate) o;
-        return value == heartRate.value && unit == heartRate.unit;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value, unit);
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof HeartRate;
-    }
-
 }
