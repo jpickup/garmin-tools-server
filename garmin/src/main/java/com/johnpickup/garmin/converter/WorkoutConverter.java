@@ -62,7 +62,7 @@ public class WorkoutConverter {
             try {
                 result.add(convertStepToGarmin(step));
             } catch (Exception e) {
-                throw new RuntimeException(String.format("Error converting %s: %s", step, e.getMessage()));
+                throw new RuntimeException(String.format("Error converting '%s': %s", step, e.getMessage()));
             }
         }
         return result;
